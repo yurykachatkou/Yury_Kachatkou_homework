@@ -77,10 +77,11 @@ cat << EOF > /etc/httpd/conf.d/balancer.conf
  </Location>
  EOF
 cat << EOF > /etc/httpd/conf.d/ajp.conf
-<Proxy "balancer://cluster stickysession=JSESSIONID">
+<Proxy balancer://cluster>
     BalancerMember "ajp://127.0.0.1:8009" loadfactor=1
     BalancerMember "ajp://127.0.0.1:8019" loadfactor=2
     ProxySet lbmethod=bytraffic
+    ProxySet stickysession=JSESSIONID
 </Proxy>
 ProxyPass / balancer://cluster/
 EOF
