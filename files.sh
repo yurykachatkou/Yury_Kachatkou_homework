@@ -23,33 +23,53 @@ cp /home/clusterjsp.war /usr/local/tomcat/apache-tomcat-8.5.46/webapps/
 
 #2
 cat << EOF > /etc/httpd/conf/workers.properties
-worker.list=kachatkou-tomcat1.lab,kachatkou-tomcat2.lab, kachatkou-tomcat3.lab, kachatkou-cluster.lab
-worker.kachatkou-tomcat1.lab.port=8109
-worker.kachatkou-tomcat1.lab.host=10.6.144.101
-worker.kachatkou-tomcat1.lab.type=ajp13
-worker.kachatkou-tomcat1.lab.lbfactor=1
-worker.kachatkou-tomcat2.lab.port=8109
-worker.kachatkou-tomcat2.lab.host=10.6.144.102
-worker.kachatkou-tomcat2.lab.type=ajp13
-worker.kachatkou-tomcat2.lab.lbfactor=1
-worker.kachatkou-tomcat3.lab.port=8109
-worker.kachatkou-tomcat3.lab.host=localhost
-worker.kachatkou-tomcat3.lab.type=ajp13
-worker.kachatkou-tomcat3.lab.lbfactor=1
-worker.kachatkou-cluster.lab.type=lb
-worker.kachatkou-cluster.lab.balanced_workers=kachatkou-tomcat1.lab,kachatkou-tomcat2.lab,kachatkou-tomcat3.lab
-worker.kachatkou-cluster.lab.sticky_session=1
+worker.list=kachatkou-tomcat1,kachatkou-tomcat2,kachatkou-tomcat3,kachatkou-cluster
+worker.default.port=8009
+worker.default.type=ajp13
+worker.default.lbfactor=1
+worker.kachatkou-tomcat1.host=kachatkou-tomcat1.lab
+worker.kachatkou-tomcat2.host=kachatkou-tomcat2.lab
+worker.kachatkou-tomcat3.host=kachatkou-tomcat3.lab
+
+worker.kachatkou-cluster.type=lb
+worker.kachatkou-cluster.balanced_workers=kachatkou-tomcat1,kachatkou-tomcat2,kachatkou-tomcat3
+worker.kachatkou-cluster.sticky_session=1
 EOF
 
 cat << EOF > /etc/httpd/conf/workers.conf
-
-LoadModule jk_module /etc/httpd/modules/mod_jk.so
-
-JkWorkersFile /etc/httpd/conf/workers.properties
-JkLogFile /var/log/apache2/mod_jk.log
-JkLogLevel info
-JkLogStampFormat "[%a %b %d %H:%M:%S %Y] "
-JkOptions +ForwardKeySize +ForwardURICompat -ForwardDirectories
-JkRequestLogFormat "%w %V %T"
+LoadModule jk_module modules/mod_jk.so
+JkWorkersFile conf/workers.properties
+JkLogFile /var/log/httpd/mod_jk.log
+JkLogLevel debug
+JkMountCopy All
+JkMount / kachatkou-cluster
+JkMount /* kachatkou-cluster
 EOF
 
+cat << EOF > /etc/httpd/conf/vhosts.conf
+<VirtualHost *:80>
+ServerName kachatkou-tomcat1.lab
+JkMount /* kachatkou-tomcat1
+
+</VirtualHost>
+
+
+<VirtualHost *:80>
+
+ServerName kachatkou-tomcat2.lab
+JkMount /* kachatkou-tomcat2
+
+</VirtualHost>
+
+<VirtualHost *:80>
+
+ServerName kachatkou-tomcat3.lab
+JkMount /* kachatkou-tomcat3
+
+</VirtualHost>
+
+<VirtualHost *:80>
+ServerName kachatkou-cluster.lab
+JkMount /* kachatkou-cluster
+</VirtualHost>
+EOF
