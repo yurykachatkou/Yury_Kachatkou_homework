@@ -20,7 +20,7 @@ Task
 	![Image](/images/3_5.png) 
 3. Add test.jsp from presentation to all tomcat servers.
 
-       	![Image](/images/3_6.png) 
+ ![Image](/images/3_6.png)
 
 	![Image](/images/3_7.png) 
 
