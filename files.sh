@@ -22,7 +22,7 @@ cp /home/clusterjsp.war /usr/local/tomcat/apache-tomcat-8.5.46/webapps/
 #1
 
 #2
-cat << EOF > /etc/httpd/conf/workers.properties
+cat << EOF > /etc/httpd/conf.d/workers.properties
 worker.list=kachatkou-tomcat1,kachatkou-tomcat2,kachatkou-tomcat3,kachatkou-cluster
 worker.default.port=8009
 worker.default.type=ajp13
@@ -36,14 +36,11 @@ worker.kachatkou-cluster.balanced_workers=kachatkou-tomcat1,kachatkou-tomcat2,ka
 worker.kachatkou-cluster.sticky_session=1
 EOF
 
-cat << EOF > /etc/httpd/conf/workers.conf
+cat << EOF > /etc/httpd/conf.d/workers.conf
 LoadModule jk_module modules/mod_jk.so
 JkWorkersFile conf/workers.properties
 JkLogFile /var/log/httpd/mod_jk.log
 JkLogLevel debug
-JkMountCopy All
-JkMount / kachatkou-cluster
-JkMount /* kachatkou-cluster
 EOF
 
 cat << EOF > /etc/httpd/conf/vhosts.conf

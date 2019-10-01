@@ -33,18 +33,21 @@ Autodeploy on surname-tomcat1
  ![Image](/images/3_9.png)
 Deploy via browse local host on surname-tomcat2
  ![Image](/images/3_10.png)
+
  ![Image](/images/3_11.png)
 
 Deploy via ContextPath on surname-tomcat3
 
  ![Image](/images/3_12.png)
-  ![Image](/images/3_13.png)
- ![Image](/images/3_14.png)
+ 
+![Image](/images/3_14.png)
+
 Task2
 1. Using mod_jk configure Tomcat Cluster with session persistence (replication):
 a. Configure 4 separate Virtual hosts for surname-tomcat1.lab, surname-tomcat2.lab, surname-tomcat3.lab and Tomcat Cluster – surname-cluster.lab.
 
 	 ![Image](/images/3_15.png)	
+
 b. Configure mod_jk – worker.properties
 
  ![Image](/images/3_16.png)
