@@ -23,8 +23,9 @@ Task
  ![Image](/images/3_6.png)
 
  ![Image](/images/3_7.png)
-
  ![Image](/images/3_8.png)
+
+
 4. Deploy clusterjsp.war on each tomcat:
  
 Autodeploy on surname-tomcat1
