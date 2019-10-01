@@ -59,6 +59,7 @@ c. Setup cluster and check that you can reach clusterjsp app via surname-cluster
 d. Check session persistence by stopping active tomcat server.
  ![Image](/images/3_20.png)
 
+
  ![Image](/images/3_21.png)
 
 Task3
